@@ -20,33 +20,33 @@ const readFile = file => (res, rej) => fs.readFile(file, parseData(res, rej));
 
 const loadData = file => new Promise(readFile(file));
 
-const resolveAction = (key, action) => {
-  lock[key] = true;
-  return loadData(key)
-    .then(action(key))
+const resolveAction = (file, action) => {
+  lock[file] = true;
+  return loadData(file)
+    .then(action(file))
     .then(result => {
-      lock[key] = false;
+      lock[file] = false;
       return result;
     });
 };
 
-const queue = (key, action) => (res, rej) => {
-  if (!lock[key]) {
-    return resolveAction(key, action)
+const queue = (file, action) => (res, rej) => {
+  if (!lock[file]) {
+    return resolveAction(file, action)
       .then(res)
       .catch(rej);
   }
 
   const intervalId = setInterval(() => {
-    if (lock[key]) return;
+    if (lock[file]) return;
     clearInterval(intervalId);
-    return resolveAction(key, action)
+    return resolveAction(file, action)
       .then(res)
       .catch(rej);
   }, 1);
 };
 
-const asap = (key, action) => new Promise(queue(key, action));
+const asap = (file, action) => new Promise(queue(file, action));
 
 const writeFile = (file, input, data) => (res, rej) => {
   fs.writeFile(file, data, err => (err ? rej(err) : res(input)));

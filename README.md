@@ -17,7 +17,7 @@ uuid v3+
 
 After cloning the repo you can install the dependencies by running;
 
-`yarn install`&nbsp;&nbsp;or&nbsp;&nbsp;`npm install`
+`yarn install --production=false`&nbsp;&nbsp;or&nbsp;&nbsp;`npm install`
 
 Check if everything is working by running;
 
