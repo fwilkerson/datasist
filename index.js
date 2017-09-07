@@ -3,6 +3,8 @@ const uuid = require('uuid/v1');
 const { join } = require('path');
 const lock = {};
 
+const encode = JSON.stringify;
+
 const parseData = (res, rej) => (err, data) => {
   if (err) return rej(err);
   let parsed = [];
@@ -52,22 +54,24 @@ const writeFile = (file, input, data) => (res, rej) => {
 
 const appendRecord = obj => file => data => {
   obj._id = uuid();
-  const result = JSON.stringify(data.concat(obj));
+  const result = encode(data.concat(obj), null, 3);
   return new Promise(writeFile(file, obj, result));
 };
 
 const removeRecord = id => file => data => {
-  const result = JSON.stringify(data.filter(x => x._id !== id));
+  const result = encode(data.filter(x => x._id !== id), null, 3);
   return new Promise(writeFile(file, id, result));
 };
 
 const updateRecord = obj => file => data => {
-  const result = JSON.stringify(data.map(x => (x._id === obj._id ? obj : x)));
+  const result = encode(data.map(x => (x._id === obj._id ? obj : x)), null, 3);
   return new Promise(writeFile(file, obj, result));
 };
 
 const fileContext = dir => fileName => {
   const file = join(dir, `${fileName}.json`);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+  if (!fs.existsSync(file)) fs.writeFileSync(file, encode([], null, 3));
   return {
     get: () => loadData(file),
     getById: id => loadData(file).then(data => data.find(x => x._id === id)),
