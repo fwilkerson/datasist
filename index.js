@@ -2,14 +2,14 @@ const fs = require('fs');
 const uuid = require('uuid/v1');
 const { join } = require('path');
 const encode = JSON.stringify;
-
+const decode = JSON.parse;
 const lock = {};
 
 const parseData = (res, rej) => (err, data) => {
   if (err) return rej(err);
   let parsed = [];
   try {
-    parsed = JSON.parse(data);
+    parsed = decode(data);
   } catch (e) {
     console.error(e);
   }
