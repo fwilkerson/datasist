@@ -1,15 +1,15 @@
 const fs = require('fs');
 const test = require('tape');
 const { resolve } = require('path');
-const ctx = require('../')('data');
+const ctx = require('../')('crud_data');
 
 test('creates directory & file if none exists', t => {
-  const fp = resolve('./data/test.json');
-  const dir = resolve('./data');
+  const fp = resolve('./crud_data/crud.json');
+  const dir = resolve('./crud_data');
   if (fs.existsSync(fp)) fs.unlinkSync(fp);
   if (fs.existsSync(dir)) fs.rmdirSync(dir);
 
-  const repo = ctx.file('test');
+  const repo = ctx.file('crud');
   const record = { name: 'test 0', createdOn: new Date().valueOf() };
   repo
     .append(record)
@@ -20,7 +20,7 @@ test('creates directory & file if none exists', t => {
 });
 
 test('appends record to existing file', t => {
-  const repo = ctx.file('test');
+  const repo = ctx.file('crud');
   const record = { name: 'test 1', createdOn: new Date().valueOf() };
   repo
     .append(record)
@@ -40,7 +40,7 @@ test('appends record to existing file', t => {
 });
 
 test('gets the record by id', t => {
-  const repo = ctx.file('test');
+  const repo = ctx.file('crud');
   const record = { name: 'test 2', createdOn: new Date().valueOf() };
   repo
     .append(record)
@@ -59,7 +59,7 @@ test('gets the record by id', t => {
 });
 
 test('updates the record', t => {
-  const repo = ctx.file('test');
+  const repo = ctx.file('crud');
   const record = { name: 'test 3', createdOn: new Date().valueOf() };
   repo
     .append(record)
@@ -75,7 +75,7 @@ test('updates the record', t => {
 });
 
 test('removes the record', t => {
-  const repo = ctx.file('test');
+  const repo = ctx.file('crud');
   const record = { name: 'test 4', createdOn: new Date().valueOf() };
   repo
     .append(record)
