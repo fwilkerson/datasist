@@ -1,9 +1,9 @@
 const fs = require('fs');
 const uuid = require('uuid/v1');
 const { join } = require('path');
-const lock = {};
-
 const encode = JSON.stringify;
+
+const lock = {};
 
 const parseData = (res, rej) => (err, data) => {
   if (err) return rej(err);
