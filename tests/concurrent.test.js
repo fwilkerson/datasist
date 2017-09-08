@@ -6,7 +6,7 @@ const ctx = require('../')('concurrent_data');
 test('can handle concurrent append requests', t => {
   const repo = ctx.file('concurrent_append');
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 98; i++) {
     const record = { test: `test: ${i}`, createdOn: new Date().valueOf() };
     repo
       .append(record)
@@ -14,13 +14,13 @@ test('can handle concurrent append requests', t => {
       .catch(e => t.notOk(e, 'append threw an error'));
   }
 
-  t.plan(100);
+  t.plan(98);
 });
 
 test('can handle concurrent update requests', t => {
   const repo = ctx.file('concurrent_update');
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 98; i++) {
     const record = { test: `test: ${i}`, createdOn: new Date().valueOf() };
     repo
       .append(record)
@@ -33,13 +33,13 @@ test('can handle concurrent update requests', t => {
       .catch(e => t.notOk(e, 'append threw an error'));
   }
 
-  t.plan(100);
+  t.plan(98);
 });
 
 test('can handle concurrent remove requrests', t => {
   const repo = ctx.file('concurrent_remove');
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 98; i++) {
     const record = { test: `test: ${i}`, createdOn: new Date().valueOf() };
     repo
       .append(record)
@@ -52,7 +52,7 @@ test('can handle concurrent remove requrests', t => {
       .catch(e => t.notOk(e, 'append threw an error'));
   }
 
-  t.plan(100);
+  t.plan(98);
 });
 
 test.onFinish(() => {
