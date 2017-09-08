@@ -1,11 +1,13 @@
 # filebase
 An inefficient file based database
 
-## Zero caching
+## ~~Zero~~ caching
 
-Every add, update, and delete will cause a read/write file
+Every add, update, and delete will cause a write file
 
-Every get will cause a read file
+~~Every get will cause a read file~~
+
+Caching added to reads operations
 
 ## Limited Dependencies
 
