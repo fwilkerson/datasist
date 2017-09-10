@@ -1,13 +1,11 @@
-# filebase
-An inefficient file based database
+# Datasist
+An inefficient file based database for prototyping.
 
-## ~~Zero~~ caching
+## Caching
+
+Read operations are cached
 
 Every add, update, and delete will cause a write file
-
-~~Every get will cause a read file~~
-
-Caching added to reads operations
 
 ## Limited Dependencies
 
@@ -17,19 +15,22 @@ uuid v3+
 
 ## Get started
 
-After cloning the repo you can install the dependencies by running;
-
-`yarn install --production=false`&nbsp;&nbsp;or&nbsp;&nbsp;`npm install`
-
-Check if everything is working by running;
-
-`yarn test`&nbsp;&nbsp;or&nbsp;&nbsp;`npm test`
-
-To use filebase import the module and point it at your desired database directory. Then you can create an object with a set of functions to modify a specific file.
+`yarn add datasist`&nbsp;&nbsp;or&nbsp;&nbsp;`npm install --save datasist`
 
 ```javascript
-const filebase = require('/location/of/filebase')
+// import datasist and tell it which directory to store files
+const datasist = require('datasist')('my-data-directory');
 
-const db = filebase('data');
-const personRepo = db.file('person');
+// create a user file and return an object is used to modify that file
+const usersDb = datasist('user');
+
+const user = { first: 'Jane', last: 'Doe' };
+
+// append a record to the user file
+usersDb.append(user)
+  .then(result => {
+    // after saving the record is returned with it's new _id field
+    console.log(result._id);
+  })
+  .catch(e => console.error(e));
 ```

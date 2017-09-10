@@ -1,8 +1,9 @@
 {
-  "name": "filebase",
+  "name": "datasist",
+  "author": "Frank A. Wilkerson",
   "version": "0.1.0",
   "main": "index.js",
-  "repository": "https://github.com/fwilkerson/filebase.git",
+  "repository": "https://github.com/fwilkerson/datasist.git",
   "license": "MIT",
   "dependencies": {
     "uuid": "^3.1.0"
