@@ -58,5 +58,4 @@ typings/
 .env
 
 # temp files
-/concurrent_data
-/crud_data
+/data

@@ -1,11 +1,11 @@
 const fs = require('fs');
 const test = require('tape');
 const { resolve } = require('path');
-const ctx = require('../')('crud_data');
+const ctx = require('../')('data/crud_data');
 
 test('creates directory & file if none exists', t => {
-  const fp = resolve('./crud_data/crud.json');
-  const dir = resolve('./crud_data');
+  const fp = resolve('./data/crud_data/crud.json');
+  const dir = resolve('./data/crud_data');
   if (fs.existsSync(fp)) fs.unlinkSync(fp);
   if (fs.existsSync(dir)) fs.rmdirSync(dir);
 
@@ -26,7 +26,7 @@ test('appends record to existing file', t => {
     .append(record)
     .then(result =>
       repo
-        .get()
+        .query()
         .then(results => {
           const appended = results.find(x => x._id === result._id);
           t.ok(results.length > 1, 'results has more than one record');
@@ -46,16 +46,17 @@ test('gets the record by id', t => {
     .append(record)
     .then(created =>
       repo
-        .getById(created._id)
-        .then(getById => {
+        .query(x => x._id === created._id)
+        .then(results => {
           const updatedRecord = Object.assign({}, record, { _id: created._id });
-          t.deepEqual(getById, updatedRecord, 'getById returned the record');
+          t.equal(results.length, 1, 'only 1 result was returned');
+          t.deepEqual(results[0], updatedRecord, 'returned correct record');
         })
-        .catch(e => t.notOk(e, 'getById threw an error'))
+        .catch(e => t.notOk(e, 'query threw an error'))
     )
     .catch(e => t.notOk(e, 'append threw an error'));
 
-  t.plan(1);
+  t.plan(2);
 });
 
 test('updates the record', t => {

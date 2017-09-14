@@ -1,7 +1,7 @@
 const fs = require('fs');
 const test = require('tape');
 const { resolve } = require('path');
-const ctx = require('../')('concurrent_data');
+const ctx = require('../')('data/concurrent_data');
 
 test('can handle concurrent append requests', t => {
   const repo = ctx.file('concurrent_append');
@@ -56,8 +56,8 @@ test('can handle concurrent remove requrests', t => {
 });
 
 test.onFinish(() => {
-  const append = resolve('./concurrent_data/concurrent_append.json');
-  const update = resolve('./concurrent_data/concurrent_update.json');
+  const append = resolve('./data/concurrent_data/concurrent_append.json');
+  const update = resolve('./data/concurrent_data/concurrent_update.json');
   if (fs.existsSync(append)) fs.unlinkSync(append);
   if (fs.existsSync(update)) fs.unlinkSync(update);
 });
