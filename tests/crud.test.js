@@ -1,92 +1,92 @@
-const fs = require('fs');
-const test = require('tape');
-const { resolve } = require('path');
-const ctx = require('../')('data/crud_data');
+const fs = require("fs");
+const test = require("tape");
+const { resolve } = require("path");
+const ctx = require("../")("test_data/crud_data");
 
-test('creates directory & file if none exists', t => {
-  const fp = resolve('./data/crud_data/crud.json');
-  const dir = resolve('./data/crud_data');
+test("creates directory & file if none exists", t => {
+  const fp = resolve("./test_data/crud_data/crud.json");
+  const dir = resolve("./test_data/crud_data");
   if (fs.existsSync(fp)) fs.unlinkSync(fp);
   if (fs.existsSync(dir)) fs.rmdirSync(dir);
 
-  const repo = ctx.file('crud');
-  const record = { name: 'test 0', createdOn: new Date().valueOf() };
+  const repo = ctx.file("crud");
+  const record = { name: "test 0", createdOn: new Date().valueOf() };
   repo
-    .append(record)
-    .then(result => t.ok(result._id, '_id was assigned to the record'))
-    .catch(e => t.notOk(e, 'append threw an error'));
+    .create(record)
+    .then(result => t.ok(result._id, "_id was assigned to the record"))
+    .catch(e => t.notOk(e, "create threw an error"));
 
   t.plan(1);
 });
 
-test('appends record to existing file', t => {
-  const repo = ctx.file('crud');
-  const record = { name: 'test 1', createdOn: new Date().valueOf() };
+test("creates record and appends to existing file", t => {
+  const repo = ctx.file("crud");
+  const record = { name: "test 1", createdOn: new Date().valueOf() };
   repo
-    .append(record)
+    .create(record)
     .then(result =>
       repo
         .query()
         .then(results => {
-          const appended = results.find(x => x._id === result._id);
-          t.ok(results.length > 1, 'results has more than one record');
-          t.ok(appended, 'results has new record');
+          const created = results.find(x => x._id === result._id);
+          t.ok(results.length > 1, "results has more than one record");
+          t.ok(created, "results has new record");
         })
-        .catch(e => t.notOk(e, 'get threw an error'))
+        .catch(e => t.notOk(e, "get threw an error"))
     )
-    .catch(e => t.notOk(e, 'append threw an error'));
+    .catch(e => t.notOk(e, "create threw an error"));
 
   t.plan(2);
 });
 
-test('gets the record by id', t => {
-  const repo = ctx.file('crud');
-  const record = { name: 'test 2', createdOn: new Date().valueOf() };
+test("gets the record by id", t => {
+  const repo = ctx.file("crud");
+  const record = { name: "test 2", createdOn: new Date().valueOf() };
   repo
-    .append(record)
+    .create(record)
     .then(created =>
       repo
         .query(x => x._id === created._id)
         .then(results => {
           const updatedRecord = Object.assign({}, record, { _id: created._id });
-          t.equal(results.length, 1, 'only 1 result was returned');
-          t.deepEqual(results[0], updatedRecord, 'returned correct record');
+          t.equal(results.length, 1, "only 1 result was returned");
+          t.deepEqual(results[0], updatedRecord, "returned correct record");
         })
-        .catch(e => t.notOk(e, 'query threw an error'))
+        .catch(e => t.notOk(e, "query threw an error"))
     )
-    .catch(e => t.notOk(e, 'append threw an error'));
+    .catch(e => t.notOk(e, "create threw an error"));
 
   t.plan(2);
 });
 
-test('updates the record', t => {
-  const repo = ctx.file('crud');
-  const record = { name: 'test 3', createdOn: new Date().valueOf() };
+test("updates the record", t => {
+  const repo = ctx.file("crud");
+  const record = { name: "test 3", createdOn: new Date().valueOf() };
   repo
-    .append(record)
+    .create(record)
     .then(created =>
       repo
         .update(Object.assign({}, created, { updatedOn: new Date().valueOf() }))
-        .then(updated => t.ok(updated.updatedOn, 'record was updated'))
-        .catch(e => t.notOk(e, 'update threw an error'))
+        .then(updated => t.ok(updated.updatedOn, "record was updated"))
+        .catch(e => t.notOk(e, "update threw an error"))
     )
-    .catch(e => t.notOk(e, 'append threw an error'));
+    .catch(e => t.notOk(e, "create threw an error"));
 
   t.plan(1);
 });
 
-test('removes the record', t => {
-  const repo = ctx.file('crud');
-  const record = { name: 'test 4', createdOn: new Date().valueOf() };
+test("deletes the record", t => {
+  const repo = ctx.file("crud");
+  const record = { name: "test 4", createdOn: new Date().valueOf() };
   repo
-    .append(record)
+    .create(record)
     .then(created =>
       repo
-        .remove(created._id)
-        .then(removed => t.equal(removed, created._id, 'record was removed'))
-        .catch(e => t.notOk(e, 'update threw an error'))
+        .delete(created._id)
+        .then(deleted => t.equal(deleted, created._id, "record was deleted"))
+        .catch(e => t.notOk(e, "update threw an error"))
     )
-    .catch(e => t.notOk(e, 'append threw an error'));
+    .catch(e => t.notOk(e, "create threw an error"));
 
   t.plan(1);
 });
