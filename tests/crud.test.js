@@ -9,7 +9,7 @@ test("creates directory & file if none exists", t => {
   if (fs.existsSync(fp)) fs.unlinkSync(fp);
   if (fs.existsSync(dir)) fs.rmdirSync(dir);
 
-  const repo = ctx.file("crud");
+  const repo = ctx("crud");
   const record = { name: "test 0", createdOn: new Date().valueOf() };
   repo
     .create(record)
@@ -20,7 +20,7 @@ test("creates directory & file if none exists", t => {
 });
 
 test("creates record and appends to existing file", t => {
-  const repo = ctx.file("crud");
+  const repo = ctx("crud");
   const record = { name: "test 1", createdOn: new Date().valueOf() };
   repo
     .create(record)
@@ -40,7 +40,7 @@ test("creates record and appends to existing file", t => {
 });
 
 test("gets the record by id", t => {
-  const repo = ctx.file("crud");
+  const repo = ctx("crud");
   const record = { name: "test 2", createdOn: new Date().valueOf() };
   repo
     .create(record)
@@ -60,7 +60,7 @@ test("gets the record by id", t => {
 });
 
 test("updates the record", t => {
-  const repo = ctx.file("crud");
+  const repo = ctx("crud");
   const record = { name: "test 3", createdOn: new Date().valueOf() };
   repo
     .create(record)
@@ -75,8 +75,28 @@ test("updates the record", t => {
   t.plan(1);
 });
 
+test("patches the record", t => {
+  const repo = ctx("crud");
+  const record = { name: "test 3", createdOn: new Date().valueOf() };
+  repo
+    .create(record)
+    .then(created =>
+      repo
+        .patch(created._id, { name: "patched?" })
+        .then(patched =>
+          repo
+            .query(x => x._id === patched)
+            .then(result =>
+              t.equal(result[0].name, "patched?", "record was patched")
+            )
+        )
+    )
+    .catch(e => t.notOk(e, "create threw an error"));
+  t.plan(1);
+});
+
 test("deletes the record", t => {
-  const repo = ctx.file("crud");
+  const repo = ctx("crud");
   const record = { name: "test 4", createdOn: new Date().valueOf() };
   repo
     .create(record)

@@ -1,4 +1,4 @@
-// @flow
+// 
 const fs = require('fs');
 const uuid = require('uuid/v1');
 const { join } = require('path');
@@ -91,7 +91,7 @@ const updateRecord = obj => file => data => {
   return new Promise(writeFile(file, obj, encoded));
 };
 
-const fileContext = (dir: string) => (fileName: string): FileRepo => {
+const fileContext = (dir) => (fileName) => {
   const file = join(dir, `${fileName}.json`);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir);
   if (!fs.existsSync(file)) fs.writeFileSync(file, encode([], null, 3));
@@ -104,12 +104,5 @@ const fileContext = (dir: string) => (fileName: string): FileRepo => {
   };
 };
 
-export type FileRepo = {
-  create: (obj: Object) => Promise<any>,
-  delete: (id: string) => Promise<string>,
-  patch: (id: string, partial: Object) => Promise<string>,
-  update: (obj: Object) => Promise<any>,
-  query: (func: (a: Object) => boolean) => Promise<Array<any>>
-};
 
 module.exports = fileContext;

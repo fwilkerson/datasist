@@ -4,7 +4,7 @@ const { resolve } = require("path");
 const ctx = require("../")("test_data/query_data");
 
 test("query functionality?", t => {
-  const repo = ctx.file("user");
+  const repo = ctx("user");
 
   Promise.all([
     repo.create({ first: "Frank", last: "Wilkerson" }),

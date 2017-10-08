@@ -4,7 +4,7 @@ const { resolve } = require("path");
 const ctx = require("../")("test_data/concurrent_data");
 
 test("can handle concurrent create requests", t => {
-  const repo = ctx.file("concurrent_create");
+  const repo = ctx("concurrent_create");
 
   for (let i = 0; i < 98; i++) {
     const record = { test: `test: ${i}`, createdOn: new Date().valueOf() };
@@ -18,7 +18,7 @@ test("can handle concurrent create requests", t => {
 });
 
 test("can handle concurrent update requests", t => {
-  const repo = ctx.file("concurrent_update");
+  const repo = ctx("concurrent_update");
 
   for (let i = 0; i < 98; i++) {
     const record = { test: `test: ${i}`, createdOn: new Date().valueOf() };
@@ -37,7 +37,7 @@ test("can handle concurrent update requests", t => {
 });
 
 test("can handle concurrent delete requests", t => {
-  const repo = ctx.file("concurrent_delete");
+  const repo = ctx("concurrent_delete");
 
   for (let i = 0; i < 98; i++) {
     const record = { test: `test: ${i}`, createdOn: new Date().valueOf() };

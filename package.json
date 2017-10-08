@@ -2,17 +2,24 @@
   "name": "datasist",
   "author": "Frank A. Wilkerson",
   "version": "0.1.0",
-  "main": "index.js",
+  "main": "dist/datasist.js",
   "repository": "https://github.com/fwilkerson/datasist.git",
   "license": "MIT",
   "dependencies": {
     "uuid": "^3.1.0"
   },
   "devDependencies": {
+    "flow-bin": "^0.54.1",
+    "flow-remove-types": "^1.2.1",
     "tap-spec": "^4.1.1",
     "tape": "^4.8.0"
   },
   "scripts": {
-    "test": "tape tests/**/*.test.js | tap-spec"
+    "build": "flow-remove-types --pretty index.js > \"./dist/datasist.js\"",
+    "flow": "flow",
+    "gen-flow-types":
+      "flow gen-flow-files index.js > \"./dist/datasist.js.flow\"",
+    "test":
+      "tape --require flow-remove-types/register tests/**/*.test.js | tap-spec"
   }
 }
