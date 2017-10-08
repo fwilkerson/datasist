@@ -1,0 +1,5 @@
+// @flow
+
+export type FileRepo = {create: (obj: Object) => Promise<any>, delete: (id: string) => Promise<string>, patch: (id: string, partial: Object) => Promise<string>, query: (func: (a: Object) => boolean) => Promise<Array<any>>, update: (obj: Object) => Promise<any>};
+
+declare module.exports: (dir: string) => (fileName: string) => {create: (obj: Object) => Promise<any>, delete: (id: string) => Promise<string>, patch: (id: string, partial: Object) => Promise<string>, query: (func: (a: Object) => boolean) => Promise<Array<any>>, update: (obj: Object) => Promise<any>};

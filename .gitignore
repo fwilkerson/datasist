@@ -57,6 +57,5 @@ typings/
 # dotenv environment variables file
 .env
 
-# temp files
-/concurrent_data
-/crud_data
+# test_data
+/test_data/**/*.json
