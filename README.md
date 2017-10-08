@@ -5,7 +5,7 @@ An inefficient file based database for prototyping.
 
 Read operations are cached
 
-Every add, update, and delete will cause a write file
+Every create, update, patch, and delete will cause a write file
 
 ## Limited Dependencies
 
@@ -21,16 +21,27 @@ uuid v3+
 // import datasist and tell it which directory to store files
 const datasist = require('datasist')('my-data-directory');
 
-// create a user file and return an object is used to modify that file
+// create a user file and return an object that modifies that file
 const usersDb = datasist('user');
 
 const user = { first: 'Jane', last: 'Doe' };
 
 // append a record to the user file
-usersDb.append(user)
+usersDb.create(user)
   .then(result => {
     // after saving the record is returned with it's new _id field
     console.log(result._id);
   })
+  .catch(e => console.error(e));
+
+
+// query all records in the user file
+usersDb.query()
+  .then(users => console.log(users))
+  .catch(e => console.error(e));
+
+// query users that match the given predicate
+usersDb.query(user => user.last.startsWith('D'))
+  .then(users => console.log(users))
   .catch(e => console.error(e));
 ```
